@@ -8,7 +8,7 @@ function Grid(game_width, game_height, size)
     for(var row=0; row<this.size; row++) {
         this.cells[row] = new Array(this.size);
         for(var column=0; column<this.size; column++) {
-            this.setCellAlive(row, column, false);
+            this.cells[row][column] = new Cell();
         }
     }
     this.setCellAlive(5, 10, true);
@@ -23,7 +23,7 @@ Grid.prototype.render = function(graphics)
         var y = row * this.cell_height;
         for(var column=0; column<this.size; column++){
             var x = column * this.cell_width;
-            if(this.cells[row][column] == true){
+            if(this.cells[row][column].isAlive()){
                 graphics.beginFill(0x000000);
             }else{
                 graphics.beginFill(0xFFFFFF);
@@ -37,14 +37,14 @@ Grid.prototype.render = function(graphics)
 
 Grid.prototype.setCellAlive = function(row, column, alive)
 {
-    this.cells[row][column] = alive;
+    this.cells[row][column].setAlive(alive);
 }
 
 
 Grid.prototype.isCellAlive = function(row, column)
 {
     if(row >= 0 && row < this.size && column >= 0 && column < this.size){
-        return this.cells[row][column];
+        return this.cells[row][column].isAlive();
     }else{
         return false;
     }
@@ -53,30 +53,16 @@ Grid.prototype.isCellAlive = function(row, column)
 
 Grid.prototype.update = function(graphics)
 {
-    // Duplicate cells
-    var new_cells = [];
-    for(var row=0; row<this.size; row++) {
-        new_cells[row] = new Array(this.size);
-        for(var column=0; column<this.size; column++) {
-            this.setCellAlive(row, column, this.cells[row][column]);
-        }
-    }
-
     for(var row=0; row<this.size; row++) {
         for(var column=0; column<this.size; column++) {
             var nAliveNeighbors = this.nAliveNeighbors(row, column);
-            if(this.isCellAlive(row, column)){
-                new_cells[row][column] = (nAliveNeighbors >= 2 && nAliveNeighbors <= 3);
-            }else if(!this.isCellAlive(row, column)){
-                new_cells[row][column] = (nAliveNeighbors == 3);
-            }
+            this.cells[row][column].updateStateInNextGeneration(nAliveNeighbors);
         }
     }
 
-    // Replace old cells by new ones
     for(var row=0; row<this.size; row++) {
         for(var column=0; column<this.size; column++) {
-            this.setCellAlive(row, column, new_cells[row][column]);
+            this.cells[row][column].setNextGeneration();
         }
     }
 
