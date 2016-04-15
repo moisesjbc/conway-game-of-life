@@ -1,4 +1,4 @@
-var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { create: create, update: update, render: render });
+var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { create: create });
 var grid = new Grid(800, 600, 25);
 var graphics = null;
 
@@ -12,11 +12,5 @@ function create()
 
 function update()
 {
-    
-}
-
-
-function render()
-{
-    
+    grid.update(graphics);
 }

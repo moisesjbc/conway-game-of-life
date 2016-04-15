@@ -5,8 +5,11 @@ function Grid(game_width, game_height, size)
     this.cell_height = game_height / this.size;
 
     this.cells = [];
-    for(var i=0; i<this.size; i++) {
-        this.cells[i] = new Array(this.size);
+    for(var row=0; row<this.size; row++) {
+        this.cells[row] = new Array(this.size);
+        for(var column=0; column<this.size; column++) {
+            this.setCellAlive(row, column, false);
+        }
     }
     this.setCellAlive(5, 10, true);
     this.setCellAlive(5, 11, true);
@@ -37,3 +40,59 @@ Grid.prototype.setCellAlive = function(row, column, alive)
     this.cells[row][column] = alive;
 }
 
+
+Grid.prototype.isCellAlive = function(row, column)
+{
+    if(row >= 0 && row < this.size && column >= 0 && column < this.size){
+        return this.cells[row][column];
+    }else{
+        return false;
+    }
+}
+
+
+Grid.prototype.update = function(graphics)
+{
+    // Duplicate cells
+    var new_cells = [];
+    for(var row=0; row<this.size; row++) {
+        new_cells[row] = new Array(this.size);
+        for(var column=0; column<this.size; column++) {
+            this.setCellAlive(row, column, this.cells[row][column]);
+        }
+    }
+
+    for(var row=0; row<this.size; row++) {
+        for(var column=0; column<this.size; column++) {
+            var nAliveNeighbors = this.nAliveNeighbors(row, column);
+            if(this.isCellAlive(row, column)){
+                new_cells[row][column] = (nAliveNeighbors >= 2 && nAliveNeighbors <= 3);
+            }else if(!this.isCellAlive(row, column)){
+                new_cells[row][column] = (nAliveNeighbors == 3);
+            }
+        }
+    }
+
+    // Replace old cells by new ones
+    for(var row=0; row<this.size; row++) {
+        for(var column=0; column<this.size; column++) {
+            this.setCellAlive(row, column, new_cells[row][column]);
+        }
+    }
+
+    this.render(graphics);
+}
+
+
+Grid.prototype.nAliveNeighbors = function(cell_row, cell_column)
+{
+    var nAliveNeighbors = 0;
+    for(row=cell_row-1; row<=cell_row+1; row++){
+        for(column=cell_column-1; column<=cell_column+1; column++){
+            if(this.isCellAlive(row, column) == true && (row != cell_row || column != cell_column)){
+                nAliveNeighbors++;
+            }
+        }
+    }
+    return nAliveNeighbors;
+}
