@@ -2,7 +2,7 @@
 
 ![](conway-game-of-life.png)
 
-Implementation of [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway's_Game_of_Life) made in Javascript using [Phaser, a fast, fund and free open source HTML5 game framework](Phaser, a fast, fund and free open source HTML5 game framework).
+Implementation of [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway's_Game_of_Life) made in Javascript using [Phaser, a fast, fund and free open source HTML5 game framework](http://phaser.io/).
 
 
 ## Play online!
