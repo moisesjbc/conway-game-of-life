@@ -14,7 +14,7 @@ function create()
 }
 
 
-function update()
+function step()
 {
     grid.update(game);
 }
@@ -23,7 +23,7 @@ function update()
 function play()
 {
     timer = game.time.create(false);
-    timer.loop(500, update, this);
+    timer.loop(500, step, this);
     timer.start();
 
     var button = document.getElementById('play_pause_button');
