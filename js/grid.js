@@ -91,3 +91,14 @@ Grid.prototype.swapCellAliveByCoordinates = function(game, x, y)
 
     this.render(game);
 }
+
+
+Grid.prototype.clear = function(game)
+{
+    for(var row=0; row<this.size; row++) {
+        for(var column=0; column<this.size; column++) {
+            this.cells[row][column].setAlive(false);
+        }
+    }
+    this.render(game);
+}

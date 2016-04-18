@@ -39,3 +39,11 @@ function pause()
     button.innerHTML = 'Play';
     button.onclick = play;
 }
+
+
+function clearGrid()
+{
+    if(confirm("Are you sure you want to clear the game grid?")){
+        grid.clear(game);
+    }
+}
