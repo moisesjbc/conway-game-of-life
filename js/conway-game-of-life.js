@@ -1,16 +1,19 @@
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { create: create });
 var grid = new Grid(800, 600, 25);
-var graphics = null;
 
 function create()
 {
     game.stage.backgroundColor = '#ffffff';
-    graphics = game.add.graphics(0, 0);
-    grid.render(graphics);
+    grid.render(game);
+
+    game.input.mouse.enabled = true;
+    game.input.mouse.mouseDownCallback = function(mouseEvent){
+        grid.swapCellAliveByCoordinates(game, game.input.mousePointer.x, game.input.mousePointer.y);
+    }
 }
 
 
 function update()
 {
-    grid.update(graphics);
+    grid.update(game);
 }

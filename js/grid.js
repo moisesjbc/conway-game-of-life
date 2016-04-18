@@ -11,13 +11,11 @@ function Grid(game_width, game_height, size)
             this.cells[row][column] = new Cell();
         }
     }
-    this.setCellAlive(5, 10, true);
-    this.setCellAlive(5, 11, true);
-    this.setCellAlive(5, 9, true);
 }
 
-Grid.prototype.render = function(graphics)
+Grid.prototype.render = function(game)
 {
+    var graphics = game.add.graphics(0, 0);
     graphics.lineStyle(2, 0xAAAAAA, 1);
     for(var row=0; row<this.size; row++){
         var y = row * this.cell_height;
@@ -51,7 +49,7 @@ Grid.prototype.isCellAlive = function(row, column)
 }
 
 
-Grid.prototype.update = function(graphics)
+Grid.prototype.update = function(game)
 {
     for(var row=0; row<this.size; row++) {
         for(var column=0; column<this.size; column++) {
@@ -66,7 +64,7 @@ Grid.prototype.update = function(graphics)
         }
     }
 
-    this.render(graphics);
+    this.render(game);
 }
 
 
@@ -81,4 +79,15 @@ Grid.prototype.nAliveNeighbors = function(cell_row, cell_column)
         }
     }
     return nAliveNeighbors;
+}
+
+
+Grid.prototype.swapCellAliveByCoordinates = function(game, x, y)
+{
+    var row = Math.floor(y / this.cell_height);
+    var column = Math.floor(x / this.cell_width);
+
+    this.cells[row][column].swapAlive();
+
+    this.render(game);
 }
